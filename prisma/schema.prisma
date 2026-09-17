@@ -1,0 +1,157 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  name          String
+  role          String         @default("USER") // USER, SUPER_ADMIN, SCHEME_MANAGER, VERIFIER, SUPPORT_ADMIN
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  profile       UserProfile?
+  bookmarks     Bookmark[]
+  applications  Application[]
+  notifications Notification[]
+  feedback      Feedback[]
+  auditLogs     AuditLog[]
+}
+
+model UserProfile {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dob                String?  // YYYY-MM-DD
+  age                Int?
+  gender             String?  // Male, Female, Transgender, Prefer Not to Say
+  state              String?  // State Name
+  district           String?
+  areaType           String?  // Rural, Urban
+  annualIncome       Float?   // in INR
+  occupation         String?  // Agriculture, Student, Business, Unemployed, Salaried, Retired, Others
+  employmentStatus   String?  // Unemployed, Self-Employed, Salaried, Student, Retired
+  education          String?  // Below 10th, 10th, 12th, Graduate, Post-Graduate, Professional
+  casteCategory      String?  // General, OBC, SC, ST
+  isEws              Boolean  @default(false)
+  isDifferentlyAbled Boolean  @default(false)
+  isStudent          Boolean  @default(false)
+  isFarmer           Boolean  @default(false)
+  isSeniorCitizen    Boolean  @default(false)
+  familySize         Int      @default(1)
+  dependentsCount    Int      @default(0)
+  housingStatus      String?  // Rented, Owned, Homeless
+  landOwned          Float    @default(0.0) // in acres
+  updatedAt          DateTime @updatedAt
+}
+
+model Scheme {
+  id                  String        @id @default(uuid())
+  name                String
+  nameHi              String?
+  nameMr              String?
+  description         String
+  descriptionHi       String?
+  descriptionMr       String?
+  benefits            String        // HTML or Markdown or formatted text list
+  benefitsHi          String?
+  benefitsMr          String?
+  category            String        // Education, Healthcare, Agriculture, Women & Child, Senior Citizens, etc.
+  ministry            String
+  ministryHi          String?
+  ministryMr          String?
+  department          String?
+  isCentral           Boolean       @default(true)
+  state               String?       // if not Central, specify state name
+  documents           String        // Stored as JSON array string, e.g. '["Aadhaar Card", "Income Certificate"]'
+  applicationProcess  String
+  applicationProcessHi String?
+  applicationProcessMr String?
+  officialUrl         String
+  infoUrl             String?
+  deadline            String?       // YYYY-MM-DD or empty
+  status              String        @default("Active") // Active, Discontinued, Draft
+  verificationStatus  String        @default("Verified") // Verified, Needs Review, Outdated, Suspended
+  lastVerified        DateTime?     @default(now())
+  source              String        // Website, Official Gazette, Notification
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  rules               SchemeRule[]
+  bookmarks           Bookmark[]
+  applications        Application[]
+  feedback            Feedback[]
+}
+
+model SchemeRule {
+  id          String   @id @default(uuid())
+  schemeId    String
+  scheme      Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  conditions  String   // JSON string storing the rule structure (e.g. nested AND/OR rules)
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schemeId  String
+  scheme    Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, schemeId])
+}
+
+model Application {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schemeId        String
+  scheme          Scheme    @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  status          String    @default("Not Applied") // Not Applied, Started, Submitted, Under Review, Additional Documents Required, Approved, Rejected, Completed
+  appliedDate     String?   // YYYY-MM-DD
+  referenceNumber String?
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([userId, schemeId])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // NEW_SCHEME, DEADLINE_REMINDER, RULE_UPDATED, PROFILE_INCOMPLETE
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  schemeId  String?
+  scheme    Scheme?  @relation(fields: [schemeId], references: [id], onDelete: SetNull)
+  reason    String   // Wrong eligibility, Wrong benefit, Broken link, Outdated information, Missing document, Other
+  details   String
+  status    String   @default("Pending") // Pending, Resolved, Ignored
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String   // CREATE_SCHEME, UPDATE_RULE, VERIFY_SCHEME, DELETE_SCHEME, LOGIN, LOGOUT
+  details   String
+  createdAt DateTime @default(now())
+}
