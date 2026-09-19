@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="favSaffron" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF9933" />
+      <stop offset="100%" stop-color="#FF5500" />
+    </linearGradient>
+    <linearGradient id="favGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#138808" />
+      <stop offset="100%" stop-color="#0B5C04" />
+    </linearGradient>
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <g filter="url(#subtleShadow)">
+    <!-- Top Saffron Arc of "B" -->
+    <path d="M 32 14 C 70 14 96 28 90 52 C 85 68 68 70 52 70 L 32 70 Z" fill="url(#favSaffron)" />
+    
+    <!-- Bottom Green Arc of "B" -->
+    <path d="M 32 70 C 68 70 98 72 102 96 C 106 120 74 124 38 124 L 28 124 C 16 94 14 44 32 14 Z" fill="url(#favGreen)" />
+    
+    <!-- Inner White Cutouts for "B" -->
+    <path d="M 38 24 L 56 24 C 66 24 74 29 72 38 C 70 47 60 49 46 49 L 38 49 Z" fill="#FFFFFF" />
+    <path d="M 38 78 L 56 78 C 66 78 72 83 70 94 C 68 105 56 112 38 112 Z" fill="#FFFFFF" />
+
+    <!-- Ashoka Chakra Container inside lower loop -->
+    <g transform="translate(62, 94)">
+      <circle r="16" fill="#FFFFFF" stroke="#000088" stroke-width="1" />
+      <circle r="14.5" fill="none" stroke="#000088" stroke-width="1.8" />
+      <circle r="3" fill="#000088" />
+      <!-- Spokes -->
+      <line x1="0" y1="-14.5" x2="0" y2="14.5" stroke="#000088" stroke-width="0.75" />
+      <line x1="-14.5" y1="0" x2="14.5" y2="0" stroke="#000088" stroke-width="0.75" />
+      <line x1="-10.25" y1="-10.25" x2="10.25" y2="10.25" stroke="#000088" stroke-width="0.75" />
+      <line x1="-10.25" y1="10.25" x2="10.25" y2="-10.25" stroke="#000088" stroke-width="0.75" />
+      <line x1="-5.55" y1="-13.4" x2="5.55" y2="13.4" stroke="#000088" stroke-width="0.75" />
+      <line x1="-13.4" y1="-5.55" x2="13.4" y2="5.55" stroke="#000088" stroke-width="0.75" />
+      <line x1="-13.4" y1="5.55" x2="13.4" y2="-5.55" stroke="#000088" stroke-width="0.75" />
+      <line x1="-5.55" y1="13.4" x2="5.55" y2="-11.1" stroke="#000088" stroke-width="0.75" />
+    </g>
+  </g>
+</svg>

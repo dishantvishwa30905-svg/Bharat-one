@@ -6,6 +6,15 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database...');
 
+  // Clean existing records to ensure idempotency
+  await prisma.bookmark.deleteMany({});
+  await prisma.application.deleteMany({});
+  await prisma.notification.deleteMany({});
+  await prisma.feedback.deleteMany({});
+  await prisma.auditLog.deleteMany({});
+  await prisma.schemeRule.deleteMany({});
+  await prisma.scheme.deleteMany({});
+
   // 1. Create Admin User
   const adminPasswordHash = await bcrypt.hash('Admin@123', 10);
   const admin = await prisma.user.upsert({

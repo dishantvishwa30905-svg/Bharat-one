@@ -20,6 +20,14 @@ export const metadata: Metadata = {
   title: 'Bharat One — One Platform. Every Scheme. Your Benefits.',
   description: 'Bharat One is an independent platform helping Indian citizens discover government schemes, check eligibility, and find official application information.',
   keywords: 'government schemes india, sarkari yojana, pm kisan, ayushman bharat, scholarship india',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
   openGraph: {
     title: 'Bharat One — One Platform. Every Scheme. Your Benefits.',
     description: 'Discover government schemes and check your eligibility for free.',
