@@ -34,7 +34,7 @@ jobs:
         run: npx prisma generate
 
       - name: Setup SQLite database for CI
-        run: node --use-system-ca node_modules/prisma/build/index.js db push
+        run: npx prisma db push --skip-generate
 
       - name: Run Next.js Linter
         run: npm run lint
