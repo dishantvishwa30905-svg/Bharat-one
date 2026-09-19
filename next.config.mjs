@@ -1,15 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    outputFileTracingIncludes: {
-      '/api/**/*': ['./prisma/dev.db', './prisma/schema.prisma'],
-      '/**/*': ['./prisma/dev.db', './prisma/schema.prisma'],
-    },
-  },
   eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
   typescript: {
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
     ignoreBuildErrors: true,
   },
   async headers() {
