@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DATABASE_URL: "file:./dev.db"
+      DATABASE_URL: "file:./prisma/dev.db"
       JWT_SECRET: "ci-testing-jwt-secret-key-32-chars-long"
       AUTH_SECRET: "ci-testing-auth-secret-key-32-chars"
       PORT: 3000
@@ -32,6 +32,9 @@ jobs:
 
       - name: Generate Prisma Client
         run: npx prisma generate
+
+      - name: Setup SQLite database for CI
+        run: node --use-system-ca node_modules/prisma/build/index.js db push
 
       - name: Run Next.js Linter
         run: npm run lint
